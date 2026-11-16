@@ -72,22 +72,17 @@ class FloatingTranslatorService : Service() {
             WindowManager.LayoutParams.TYPE_PHONE
         }
 
+        // إزالة FLAG_BLUR_BEHIND نهائياً حتى لا يحجب النظام اللمس عن الشاشة الخلفية
         params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             layoutFlag,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
             x = 36
             y = 280
-        }
-
-        // تفعيل الضبابية الحقيقية (Real-time Window Blur) على أندرويد 12 فأحدث
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            params.flags = params.flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
-            params.blurBehindRadius = 40
         }
 
         windowManager.addView(floatingView, params)
@@ -106,7 +101,6 @@ class FloatingTranslatorService : Service() {
         val etSourceText = floatingView.findViewById<EditText>(R.id.etSourceText)
         val tvTranslatedResult = floatingView.findViewById<TextView>(R.id.tvTranslatedResult)
 
-        // حركة طفو هادئة للريشة
         ObjectAnimator.ofFloat(ivQuill, "translationY", -3f, 3f).apply {
             duration = 1600
             repeatMode = ValueAnimator.REVERSE
@@ -114,7 +108,7 @@ class FloatingTranslatorService : Service() {
             start()
         }
 
-        // سحب وتحريك أيقونة الريشة بانسيابية
+        // سحب وتحريك الريشة + فتح لوحة الترجمة عند النقر دون إعاقة الشاشة
         bubbleContainer.setOnTouchListener(object : View.OnTouchListener {
             private var initialX = 0
             private var initialY = 0
@@ -138,16 +132,12 @@ class FloatingTranslatorService : Service() {
                     }
                     MotionEvent.ACTION_UP -> {
                         if (abs(event.rawX - initialTouchX) < 12 && abs(event.rawY - initialTouchY) < 12) {
+                            // إظهار اللوحة الزجاجية دون حجب اللمس عن التطبيقات الأخرى
                             bubbleContainer.visibility = View.GONE
                             expandedPanel.visibility = View.VISIBLE
-                            params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                params.flags = params.flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
-                                params.blurBehindRadius = 55
-                            }
+                            params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                                    WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                             windowManager.updateViewLayout(floatingView, params)
-
-                            readAndTranslateScreen(etSourceText, tvTranslatedResult, tvDirection)
                         }
                         return true
                     }
@@ -156,17 +146,16 @@ class FloatingTranslatorService : Service() {
             }
         })
 
+        // إغلاق اللوحة والعودة للريشة وتحرير التركيز بالكامل
         btnMinimize.setOnClickListener {
             expandedPanel.visibility = View.GONE
             bubbleContainer.visibility = View.VISIBLE
-            params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                params.flags = params.flags or WindowManager.LayoutParams.FLAG_BLUR_BEHIND
-                params.blurBehindRadius = 35
-            }
+            params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             windowManager.updateViewLayout(floatingView, params)
         }
 
+        // مسح الشاشة وترجمتها عند الضغط على الزر المخصص
         btnReadScreen.setOnClickListener {
             readAndTranslateScreen(etSourceText, tvTranslatedResult, tvDirection)
         }
@@ -224,20 +213,28 @@ class FloatingTranslatorService : Service() {
             return
         }
 
-        val screenText = service.extractVisibleScreenText()
-        if (screenText.isNotEmpty()) {
-            etSource.setText(screenText)
-            TranslationHelper.autoTranslate(
-                screenText,
-                onResult = { translated, dir ->
-                    tvDirection.text = dir
-                    tvResult.text = translated
-                },
-                onError = { err -> tvResult.text = err }
-            )
-        } else {
-            tvResult.text = "لا توجد نصوص قابلة للقراءة في هذه الواجهة."
-        }
+        // إخفاء اللوحة لحظة المسح لقراءة التطبيق الخلفي بدقة ثم إظهارها فوراً
+        val expandedPanel = floatingView.findViewById<LinearLayout>(R.id.expandedPanelContainer)
+        expandedPanel.visibility = View.INVISIBLE
+
+        expandedPanel.postDelayed({
+            val screenText = service.extractVisibleScreenText()
+            expandedPanel.visibility = View.VISIBLE
+
+            if (screenText.isNotEmpty()) {
+                etSource.setText(screenText)
+                TranslationHelper.autoTranslate(
+                    screenText,
+                    onResult = { translated, dir ->
+                        tvDirection.text = dir
+                        tvResult.text = translated
+                    },
+                    onError = { err -> tvResult.text = err }
+                )
+            } else {
+                tvResult.text = "لا توجد نصوص قابلة للقراءة في هذه الواجهة."
+            }
+        }, 120)
     }
 
     override fun onDestroy() {
