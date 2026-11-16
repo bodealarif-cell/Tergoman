@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- خلفية دائرية متدرجة -->
+    <path
+        android:fillColor="#1A237E"
+        android:pathData="M54,54m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0" />
+    <path
+        android:fillColor="#283593"
+        android:pathData="M54,8 A46,46 0 0,1 100,54 L8,54 A46,46 0 0,1 54,8 Z" />
+
+    <!-- جسم الريشة الذهبي/الأبيض -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M78,22 C62,24 44,38 35,58 L30,72 L34,74 L41,62 C56,57 72,42 78,22 Z" />
+
+    <!-- تفاصيل شقوق الريشة -->
+    <path
+        android:strokeColor="#1A237E"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M74,26 L33,70 M58,34 L50,38 M65,42 L56,44 M49,45 L42,49" />
+
+    <!-- سن الريشة -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,72 L26,80 L34,74 Z" />
+
+    <!-- قطرة حبر متساقطة (نقطة 1) -->
+    <path
+        android:fillColor="#4FC3F7"
+        android:pathData="M26,83 C26,83 22,88 22,90.5 A4,4 0 1,0 30,90.5 C30,88 26,83 26,83 Z" />
+
+    <!-- قطرة حبر صغيرة ثانية -->
+    <path
+        android:fillColor="#81D4FA"
+        android:pathData="M35,88 A2.2,2.2 0 1,0 35,92.4 A2.2,2.2 0 1,0 35,88 Z" />
+</vector>

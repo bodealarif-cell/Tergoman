@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ترجمان</string>
+    <string name="accessibility_desc">يسمح لتطبيق ترجمان بقراءة النصوص الظاهرة على الشاشة فوق أي تطبيق لترجمتها فوراً بين العربية والإنجليزية.</string>
+</resources>

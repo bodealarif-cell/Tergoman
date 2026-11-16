@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- 1. أيقونة الريشة العائمة (الحالة المصغرة) -->
+    <FrameLayout
+        android:id="@+id/floatingBubbleContainer"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/ivQuillIcon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:contentDescription="أيقونة ترجمان"
+            android:src="@drawable/ic_quill_ink" />
+    </FrameLayout>
+
+    <!-- 2. نافذة الترجمة الفورية (الحالة الموسعة) -->
+    <LinearLayout
+        android:id="@+id/expandedPanelContainer"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_floating_card"
+        android:elevation="12dp"
+        android:orientation="vertical"
+        android:padding="14dp"
+        android:visibility="gone">
+
+        <!-- شريط العنوان والتحكم -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_quill_ink" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="ترجمان الفوري"
+                android:textColor="#FFD54F"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnReadScreen"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:backgroundTint="#0284C7"
+                android:paddingHorizontal="10dp"
+                android:text="ترجم الشاشة"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/btnMinimize"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="6dp"
+                android:gravity="center"
+                android:text="✕"
+                android:textColor="#94A3B8"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- صندوق النص الأصلي -->
+        <EditText
+            android:id="@+id/etSourceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#1E293B"
+            android:hint="اكتب أو الصق النص هنا، أو اضغط ترجم الشاشة..."
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:minHeight="65dp"
+            android:padding="10dp"
+            android:textColor="#F8FAFC"
+            android:textColorHint="#64748B"
+            android:textSize="14sp" />
+
+        <!-- أزرار الإجراءات -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnTranslateNow"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:backgroundTint="#FFD54F"
+                android:text="ترجم (عربي ⇄ إنجليزي)"
+                android:textColor="#0F172A"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnPasteClipboard"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="#334155"
+                android:text="لصق"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- نتيجة الترجمة -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginTop="8dp"
+            android:background="#0B1120"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvTranslatedResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="الترجمة ستظهر هنا فوراً..."
+                android:textColor="#4FC3F7"
+                android:textIsSelectable="true"
+                android:textSize="15sp" />
+        </ScrollView>
+
+        <!-- زر نسخ النتيجة -->
+        <Button
+            android:id="@+id/btnCopyResult"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="6dp"
+            android:backgroundTint="#1E293B"
+            android:text="نسخ الترجمة"
+            android:textColor="#FFD54F"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</FrameLayout>
