@@ -15,9 +15,7 @@ class ScreenReaderAccessibilityService : AccessibilityService() {
         instance = this
     }
 
-    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        // يمكن التقاط تحديد النص التلقائي هنا مستقبلاً
-    }
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
 
     override fun onInterrupt() {}
 
@@ -26,29 +24,24 @@ class ScreenReaderAccessibilityService : AccessibilityService() {
         instance = null
     }
 
-    /**
-     * استخراج كل النصوص الظاهرة حالياً في التطبيق المفتوح على الشاشة
-     */
     fun extractVisibleScreenText(): String {
         val rootNode = rootInActiveWindow ?: return ""
-        val sb = StringBuilder()
-        traverseNodes(rootNode, sb)
-        return sb.toString().trim()
+        val lines = LinkedHashSet<String>()
+        traverseNodes(rootNode, lines)
+        return lines.joinToString("\n").trim()
     }
 
-    private fun traverseNodes(node: AccessibilityNodeInfo?, sb: StringBuilder) {
+    private fun traverseNodes(node: AccessibilityNodeInfo?, lines: LinkedHashSet<String>) {
         if (node == null) return
-
-        // تجاهل نافذة تطبيق ترجمان نفسه حتى لا يترجم نفسه
         if (node.packageName?.toString() == packageName) return
 
         val text = node.text?.toString()?.trim()
         if (!text.isNullOrEmpty() && text.length > 1) {
-            sb.append(text).append("\n")
+            lines.add(text)
         }
 
         for (i in 0 until node.childCount) {
-            traverseNodes(node.getChild(i), sb)
+            traverseNodes(node.getChild(i), lines)
         }
     }
 }

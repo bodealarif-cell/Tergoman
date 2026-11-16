@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F172A"
+    android:background="@drawable/bg_ambient_obsidian"
     android:fillViewport="true">
 
     <LinearLayout
@@ -13,79 +12,157 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <ImageView
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="أيقونة ترجمان"
-            android:src="@drawable/ic_quill_ink" />
+        <!-- الهوية البصرية -->
+        <FrameLayout
+            android:layout_width="116dp"
+            android:layout_height="116dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_floating_orb"
+            android:elevation="12dp"
+            android:padding="6dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_quill_ink" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
+            android:letterSpacing="0.04"
             android:text="ترجمان"
-            android:textColor="#FFD54F"
-            android:textSize="32sp"
+            android:textColor="#F8FAFC"
+            android:textSize="34sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="مترجم فوري عائم فوق جميع التطبيقات
-(العربية ⇄ الإنجليزية)"
-            android:textColor="#CBD5E1"
-            android:textSize="15sp" />
+            android:text="العربية  ⇄  English"
+            android:textColor="#38BDF8"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvModelStatus"
+        <!-- بطاقة الحالة والتهيئة الزجاجية -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_floating_card"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="جاري فحص حزم اللغة (العربية / الإنجليزية)..."
-            android:textColor="#4FC3F7"
-            android:textSize="14sp" />
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_super_glass_panel"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnOverlayPermission"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="20dp"
-            android:text="1. تفعيل الظهور فوق التطبيقات"
-            android:textColor="#0F172A"
-            android:textStyle="bold"
-            app:backgroundTint="#FFD54F"
-            app:cornerRadius="14dp" />
+            <!-- مؤشر القاموس الأوفلاين -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_glass_inner_box"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="14dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAccessibilityPermission"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="12dp"
-            android:text="2. تفعيل خدمة قراءة الشاشة (ترجمان)"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:backgroundTint="#1E293B"
-            app:cornerRadius="14dp"
-            app:strokeColor="#FFD54F"
-            app:strokeWidth="1dp" />
+                <View
+                    android:id="@+id/viewStatusDot"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/bg_floating_orb" />
 
-        <com.google.android.material.button.MaterialButton
+                <TextView
+                    android:id="@+id/tvModelStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="تهيئة القاموس الفوري..."
+                    android:textColor="#E2E8F0"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- خطوة 1: إذن الظهور -->
+            <LinearLayout
+                android:id="@+id/btnOverlayPermission"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_glass_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="الظهور فوق التطبيقات"
+                    android:textColor="#F8FAFC"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvOverlayBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="مطلوب"
+                    android:textColor="#FBBF24"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- خطوة 2: إذن قراءة الشاشة -->
+            <LinearLayout
+                android:id="@+id/btnAccessibilityPermission"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_glass_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="التقاط النصوص من الشاشة"
+                    android:textColor="#F8FAFC"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAccessBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="تفعيل"
+                    android:textColor="#38BDF8"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- زر الإطلاق الرئيسي -->
+        <TextView
             android:id="@+id/btnToggleFloating"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="58dp"
             android:layout_marginTop="24dp"
-            android:text="تشغيل أيقونة الريشة العائمة"
-            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_glass_accent_button"
+            android:clickable="true"
+            android:elevation="8dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="إطلاق الريشة العائمة"
+            android:textColor="#060913"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:backgroundTint="#0284C7"
-            app:cornerRadius="16dp" />
+            android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>

@@ -1,36 +1,41 @@
 package com.tarjuman.app
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var tvModelStatus: TextView
+    private lateinit var tvOverlayBadge: TextView
+    private lateinit var tvAccessBadge: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         tvModelStatus = findViewById(R.id.tvModelStatus)
-        val btnOverlay = findViewById<MaterialButton>(R.id.btnOverlayPermission)
-        val btnAccessibility = findViewById<MaterialButton>(R.id.btnAccessibilityPermission)
-        val btnToggleFloating = findViewById<MaterialButton>(R.id.btnToggleFloating)
+        tvOverlayBadge = findViewById(R.id.tvOverlayBadge)
+        tvAccessBadge = findViewById(R.id.tvAccessBadge)
 
-        // تحميل نماذج الترجمة (عربي <-> إنجليزي) للعمل أوفلاين
-        TranslationHelper.downloadModelsIfNeeded { status ->
+        val btnOverlay = findViewById<LinearLayout>(R.id.btnOverlayPermission)
+        val btnAccessibility = findViewById<LinearLayout>(R.id.btnAccessibilityPermission)
+        val btnToggleFloating = findViewById<TextView>(R.id.btnToggleFloating)
+
+        TranslationHelper.downloadModelsIfNeeded { status, ready ->
             runOnUiThread {
                 tvModelStatus.text = status
+                tvModelStatus.setTextColor(if (ready) Color.parseColor("#38BDF8") else Color.parseColor("#E2E8F0"))
             }
         }
 
-        // 1. طلب إذن الظهور فوق التطبيقات الأخرى
         btnOverlay.setOnClickListener {
             if (!Settings.canDrawOverlays(this)) {
                 val intent = Intent(
@@ -39,21 +44,17 @@ class MainActivity : AppCompatActivity() {
                 )
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "إذن الظهور فوق التطبيقات مفعل بالفعل ✅", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "الإذن مفعّل", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // 2. فتح إعدادات إمكانية الوصول لتفعيل قراءة الشاشة
         btnAccessibility.setOnClickListener {
-            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-            startActivity(intent)
-            Toast.makeText(this, "ابحث عن (ترجمان) وقم بتفعيله", Toast.LENGTH_LONG).show()
+            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
         }
 
-        // 3. تشغيل الفقاعة العائمة (الريشة)
         btnToggleFloating.setOnClickListener {
             if (!Settings.canDrawOverlays(this)) {
-                Toast.makeText(this, "يرجى تفعيل إذن الظهور فوق التطبيقات أولاً!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "فعّل الظهور فوق التطبيقات أولاً", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -63,8 +64,30 @@ class MainActivity : AppCompatActivity() {
             } else {
                 startService(serviceIntent)
             }
-            Toast.makeText(this, "تم إطلاق أيقونة الريشة العائمة!", Toast.LENGTH_SHORT).show()
-            moveTaskToBack(true) // تصغير التطبيق للعمل فوق التطبيقات الأخرى
+            moveTaskToBack(true)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updatePermissionBadges()
+    }
+
+    private fun updatePermissionBadges() {
+        if (Settings.canDrawOverlays(this)) {
+            tvOverlayBadge.text = "مفعّل ✓"
+            tvOverlayBadge.setTextColor(Color.parseColor("#34D399"))
+        } else {
+            tvOverlayBadge.text = "مطلوب"
+            tvOverlayBadge.setTextColor(Color.parseColor("#FBBF24"))
+        }
+
+        if (ScreenReaderAccessibilityService.instance != null) {
+            tvAccessBadge.text = "مفعّل ✓"
+            tvAccessBadge.setTextColor(Color.parseColor("#34D399"))
+        } else {
+            tvAccessBadge.text = "تفعيل"
+            tvAccessBadge.setTextColor(Color.parseColor("#38BDF8"))
         }
     }
 }

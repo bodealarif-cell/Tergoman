@@ -20,44 +20,46 @@ object TranslationHelper {
     private val enToArTranslator = Translation.getClient(enToArOptions)
     private val arToEnTranslator = Translation.getClient(arToEnOptions)
 
-    fun downloadModelsIfNeeded(onStatusUpdate: (String) -> Unit) {
+    fun downloadModelsIfNeeded(onStatusUpdate: (String, Boolean) -> Unit) {
         val conditions = DownloadConditions.Builder().build()
-        onStatusUpdate("جاري تحميل قاموس الإنجليزية -> العربية...")
+        onStatusUpdate("تحميل حزمة الإنجليزية...", false)
         enToArTranslator.downloadModelIfNeeded(conditions)
             .addOnSuccessListener {
-                onStatusUpdate("جاري تحميل قاموس العربية -> الإنجليزية...")
+                onStatusUpdate("تحميل حزمة العربية...", false)
                 arToEnTranslator.downloadModelIfNeeded(conditions)
                     .addOnSuccessListener {
-                        onStatusUpdate("✅ قواميس ترجمان جاهزة وتعمل أوفلاين بالكامل!")
+                        onStatusUpdate("القاموس جاهز ويعمل بدون إنترنت", true)
                     }
-                    .addOnFailureListener { e ->
-                        onStatusUpdate("⚠️ تعذر تحميل القاموس العربي: ${e.localizedMessage}")
+                    .addOnFailureListener {
+                        onStatusUpdate("تعذر تحميل القاموس العربي — تحقق من الشبكة", false)
                     }
             }
-            .addOnFailureListener { e ->
-                onStatusUpdate("⚠️ تأكد من الاتصال بالإنترنت لأول مرة: ${e.localizedMessage}")
+            .addOnFailureListener {
+                onStatusUpdate("تحتاج للإنترنت مرة واحدة لتنزيل القاموس", false)
             }
     }
 
-    /**
-     * يكتشف لغة النص تلقائياً (عربي أو إنجليزي) ويترجمه للغة المقابلة
-     */
-    fun autoTranslate(text: String, onResult: (String) -> Unit, onError: (String) -> Unit) {
+    fun autoTranslate(
+        text: String,
+        onResult: (translated: String, directionLabel: String) -> Unit,
+        onError: (String) -> Unit
+    ) {
         val cleanText = text.trim()
         if (cleanText.isEmpty()) {
-            onError("لا يوجد نص لترجمته.")
+            onError("أدخل نصاً أو امسح الشاشة للترجمة")
             return
         }
 
         val isArabic = containsArabic(cleanText)
         val translator = if (isArabic) arToEnTranslator else enToArTranslator
+        val direction = if (isArabic) "العربية  →  English" else "English  →  العربية"
 
         translator.translate(cleanText)
             .addOnSuccessListener { translatedText ->
-                onResult(translatedText)
+                onResult(translatedText, direction)
             }
-            .addOnFailureListener { exception ->
-                onError("جاري تجهيز القاموس أو حدث خطأ: ${exception.localizedMessage}")
+            .addOnFailureListener {
+                onError("القاموس قيد التجهيز، تأكد من اكتمال التحميل")
             }
     }
 

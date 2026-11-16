@@ -5,38 +5,46 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- خلفية دائرية متدرجة -->
+    <!-- هالة زجاجية خارجية -->
     <path
-        android:fillColor="#1A237E"
+        android:fillColor="#E6090D16"
         android:pathData="M54,54m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0" />
-    <path
-        android:fillColor="#283593"
-        android:pathData="M54,8 A46,46 0 0,1 100,54 L8,54 A46,46 0 0,1 54,8 Z" />
 
-    <!-- جسم الريشة الذهبي/الأبيض -->
+    <!-- إطار بلوري مضيء -->
     <path
-        android:fillColor="#FFD54F"
-        android:pathData="M78,22 C62,24 44,38 35,58 L30,72 L34,74 L41,62 C56,57 72,42 78,22 Z" />
+        android:strokeColor="#6638BDF8"
+        android:strokeWidth="2"
+        android:pathData="M54,54m-48,0a48,48 0,1 1,96 0a48,48 0,1 1,-96 0" />
 
-    <!-- تفاصيل شقوق الريشة -->
+    <!-- انعكاس ضوئي زجاجي علوي -->
     <path
-        android:strokeColor="#1A237E"
-        android:strokeWidth="1.8"
+        android:fillColor="#1AFFFFFF"
+        android:pathData="M54,6 A48,48 0 0,1 102,54 C82,42 26,42 6,54 A48,48 0 0,1 54,6 Z" />
+
+    <!-- جسم الريشة الذهبي البلاتيني -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M79,21 C62,23 43,38 34,58 L29,72 L33,74 L40,62 C56,57 73,41 79,21 Z" />
+
+    <!-- عصب الريشة وتفاصيلها -->
+    <path
+        android:strokeColor="#090D16"
+        android:strokeWidth="1.6"
         android:strokeLineCap="round"
-        android:pathData="M74,26 L33,70 M58,34 L50,38 M65,42 L56,44 M49,45 L42,49" />
+        android:pathData="M75,25 L32,70 M59,33 L51,37 M66,41 L57,43 M50,45 L43,49" />
 
-    <!-- سن الريشة -->
+    <!-- سن الريشة الحاد -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M30,72 L26,80 L34,74 Z" />
+        android:fillColor="#F8FAFC"
+        android:pathData="M29,72 L25,80 L33,74 Z" />
 
-    <!-- قطرة حبر متساقطة (نقطة 1) -->
+    <!-- قطرة حبر فيروزية متوهجة -->
     <path
-        android:fillColor="#4FC3F7"
-        android:pathData="M26,83 C26,83 22,88 22,90.5 A4,4 0 1,0 30,90.5 C30,88 26,83 26,83 Z" />
+        android:fillColor="#38BDF8"
+        android:pathData="M25,83 C25,83 21,88 21,90.8 A4,4 0 1,0 29,90.8 C29,88 25,83 25,83 Z" />
 
-    <!-- قطرة حبر صغيرة ثانية -->
+    <!-- قطرة حبر صغيرة ثانوية -->
     <path
-        android:fillColor="#81D4FA"
-        android:pathData="M35,88 A2.2,2.2 0 1,0 35,92.4 A2.2,2.2 0 1,0 35,88 Z" />
+        android:fillColor="#7DD3FC"
+        android:pathData="M34,89 A2,2 0 1,0 34,93 A2,2 0 1,0 34,89 Z" />
 </vector>

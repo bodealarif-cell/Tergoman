@@ -9,10 +9,10 @@ android {
 
     defaultConfig {
         applicationId = "com.tarjuman.app"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0-Glass"
     }
 
     buildTypes {
@@ -35,7 +35,5 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    
-    // Google ML Kit On-Device Translation (Arabic <-> English)
     implementation("com.google.mlkit:translate:17.0.2")
 }

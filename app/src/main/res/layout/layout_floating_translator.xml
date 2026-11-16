@@ -3,34 +3,35 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <!-- 1. أيقونة الريشة العائمة (الحالة المصغرة) -->
+    <!-- 1. أيقونة الريشة العائمة (Glass Orb) -->
     <FrameLayout
         android:id="@+id/floatingBubbleContainer"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:elevation="8dp">
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:background="@drawable/bg_floating_orb"
+        android:elevation="12dp"
+        android:padding="4dp">
 
         <ImageView
             android:id="@+id/ivQuillIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:contentDescription="أيقونة ترجمان"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/ic_quill_ink" />
     </FrameLayout>
 
-    <!-- 2. نافذة الترجمة الفورية (الحالة الموسعة) -->
+    <!-- 2. لوحة الترجمة الزجاجية الفورية (Super Blur Glass Panel) -->
     <LinearLayout
         android:id="@+id/expandedPanelContainer"
-        android:layout_width="320dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_floating_card"
-        android:elevation="12dp"
+        android:background="@drawable/bg_super_glass_panel"
+        android:elevation="16dp"
         android:orientation="vertical"
-        android:padding="14dp"
+        android:padding="16dp"
         android:visibility="gone">
 
-        <!-- شريط العنوان والتحكم -->
+        <!-- شريط التحكم العلوي -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,116 +39,153 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
                 android:src="@drawable/ic_quill_ink" />
 
             <TextView
+                android:id="@+id/tvDetectedDirection"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:text="ترجمان الفوري"
-                android:textColor="#FFD54F"
-                android:textSize="16sp"
+                android:text="عربي ⇄ English"
+                android:textColor="#FBBF24"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <Button
+            <!-- زر مسح الشاشة -->
+            <TextView
                 android:id="@+id/btnReadScreen"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:backgroundTint="#0284C7"
-                android:paddingHorizontal="10dp"
-                android:text="ترجم الشاشة"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
+                android:layout_height="32dp"
+                android:background="@drawable/bg_glass_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingHorizontal="12dp"
+                android:text="مسح الشاشة"
+                android:textColor="#38BDF8"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
+            <!-- تصغير للريشة -->
             <TextView
                 android:id="@+id/btnMinimize"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_glass_button"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:text="✕"
-                android:textColor="#94A3B8"
-                android:textSize="18sp"
+                android:textColor="#E2E8F0"
+                android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- صندوق النص الأصلي -->
+        <!-- حقل النص الأصلي -->
         <EditText
             android:id="@+id/etSourceText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#1E293B"
-            android:hint="اكتب أو الصق النص هنا، أو اضغط ترجم الشاشة..."
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_glass_inner_box"
+            android:hint="اكتب أو الصق النص..."
             android:inputType="textMultiLine"
             android:maxLines="4"
-            android:minHeight="65dp"
-            android:padding="10dp"
+            android:minHeight="60dp"
+            android:padding="12dp"
             android:textColor="#F8FAFC"
             android:textColorHint="#64748B"
             android:textSize="14sp" />
 
-        <!-- أزرار الإجراءات -->
+        <!-- أزرار التفاعل السريع -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/btnTranslateNow"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="38dp"
                 android:layout_weight="1"
-                android:backgroundTint="#FFD54F"
-                android:text="ترجم (عربي ⇄ إنجليزي)"
-                android:textColor="#0F172A"
+                android:background="@drawable/bg_glass_accent_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="ترجم الآن"
+                android:textColor="#060913"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <Button
+            <TextView
                 android:id="@+id/btnPasteClipboard"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginStart="6dp"
-                android:backgroundTint="#334155"
+                android:layout_height="38dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_glass_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingHorizontal="14dp"
                 android:text="لصق"
-                android:textColor="#FFFFFF"
+                android:textColor="#E2E8F0"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnClearText"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/bg_glass_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingHorizontal="12dp"
+                android:text="مسح"
+                android:textColor="#94A3B8"
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- نتيجة الترجمة -->
+        <!-- صندوق النتيجة الزجاجي -->
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:layout_marginTop="8dp"
-            android:background="#0B1120"
-            android:padding="10dp">
+            android:layout_height="115dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_glass_result_box"
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/tvTranslatedResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="الترجمة ستظهر هنا فوراً..."
-                android:textColor="#4FC3F7"
+                android:lineSpacingExtra="4dp"
+                android:text="..."
+                android:textColor="#F8FAFC"
                 android:textIsSelectable="true"
                 android:textSize="15sp" />
         </ScrollView>
 
         <!-- زر نسخ النتيجة -->
-        <Button
+        <TextView
             android:id="@+id/btnCopyResult"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_marginTop="6dp"
-            android:backgroundTint="#1E293B"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_glass_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
             android:text="نسخ الترجمة"
-            android:textColor="#FFD54F"
-            android:textSize="12sp" />
+            android:textColor="#38BDF8"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </FrameLayout>
